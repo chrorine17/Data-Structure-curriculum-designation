@@ -5,28 +5,28 @@
 
 using namespace std;
 
-// ÆÓËØÆ¥ÅäËã·¨£ºÖğÎ»ÒÆ¶¯´°¿Ú£¬Ê±¼ä¸´ÔÓ¶È O(nm)£¬¿Õ¼ä¸´ÔÓ¶È O(1)
+// æœ´ç´ åŒ¹é…ç®—æ³•ï¼šé€ä½ç§»åŠ¨çª—å£ï¼Œæ—¶é—´å¤æ‚åº¦ O(nm)ï¼Œç©ºé—´å¤æ‚åº¦ O(1)
 SearchResult bruteForceSearch(const string& text, const string& pattern) {
     SearchResult result{ "Brute Force" };
     auto start = chrono::high_resolution_clock::now();
 
-    // ±ß½ç´¦Àí£ºÈôÄ£Ê½Îª¿Õ»òÎÄ±¾¶ÌÓÚÄ£Ê½£¬ÔòÎŞĞèÆ¥Åä
+    // è¾¹ç•Œå¤„ç†ï¼šè‹¥æ¨¡å¼ä¸ºç©ºæˆ–æ–‡æœ¬çŸ­äºæ¨¡å¼ï¼Œåˆ™æ— éœ€åŒ¹é…
     if (pattern.empty() || text.size() < pattern.size()) {
         result.duration = chrono::high_resolution_clock::now() - start;
         return result;
     }
 
-    // Íâ²ãÑ­»·»¬¶¯´°¿Ú£¬ÖğÎ»³¢ÊÔÆ¥ÅäÄ£Ê½´®
+    // å¤–å±‚å¾ªç¯æ»‘åŠ¨çª—å£ï¼Œé€ä½å°è¯•åŒ¹é…æ¨¡å¼ä¸²
     for (size_t i = 0; i <= text.size() - pattern.size(); ++i) {
         size_t j = 0;
-        // ÄÚ²ãÑ­»·Öğ×Ö·û±È½Ï£¬Óöµ½²»µÈÁ¢¼´Ìø³ö
+        // å†…å±‚å¾ªç¯é€å­—ç¬¦æ¯”è¾ƒï¼Œé‡åˆ°ä¸ç­‰ç«‹å³è·³å‡º
         for (; j < pattern.size(); ++j) {
             ++result.characterComparisons;
             if (text[i + j] != pattern[j]) {
                 break;
             }
         }
-        // µ± j µ½´ïÄ£Ê½³¤¶È±íÊ¾Æ¥Åä³É¹¦£¬¼ÇÂ¼ÆğÊ¼Î»ÖÃ
+        // å½“ j åˆ°è¾¾æ¨¡å¼é•¿åº¦è¡¨ç¤ºåŒ¹é…æˆåŠŸï¼Œè®°å½•èµ·å§‹ä½ç½®
         if (j == pattern.size()) {
             result.positions.push_back(static_cast<int>(i));
         }
@@ -37,12 +37,12 @@ SearchResult bruteForceSearch(const string& text, const string& pattern) {
     return result;
 }
 
-// Rabin-Karp Ëã·¨£ºÊ¹ÓÃ¹ö¶¯¹şÏ£¼ÓËÙÆ¥Åä£¬Æ½¾ùÊ±¼ä O(n+m)£¬×î»µ O(nm)
+// Rabin-Karp ç®—æ³•ï¼šä½¿ç”¨æ»šåŠ¨å“ˆå¸ŒåŠ é€ŸåŒ¹é…ï¼Œå¹³å‡æ—¶é—´ O(n+m)ï¼Œæœ€å O(nm)
 SearchResult rabinKarpSearch(const string& text, const string& pattern, int base, int modulus) {
     SearchResult result{ "Rabin-Karp" };
     auto start = chrono::high_resolution_clock::now();
 
-    // ±ß½ç´¦Àí£º¿ÕÄ£Ê½»òÎÄ±¾Ì«¶ÌÖ±½Ó·µ»Ø¿Õ½á¹û
+    // è¾¹ç•Œå¤„ç†ï¼šç©ºæ¨¡å¼æˆ–æ–‡æœ¬å¤ªçŸ­ç›´æ¥è¿”å›ç©ºç»“æœ
     if (pattern.empty() || text.size() < pattern.size()) {
         result.duration = chrono::high_resolution_clock::now() - start;
         return result;
@@ -55,22 +55,22 @@ SearchResult rabinKarpSearch(const string& text, const string& pattern, int base
     int textHash = 0;
     int highestPower = 1; // base^(m-1) % modulus
 
-    // ¼ÆËã×î¸ßÎ»È¨Öµ£¬ºóĞøÓÃÓÚ¹ö¶¯¹şÏ£ÒÆ³ıÊ××Ö·û
+    // è®¡ç®—æœ€é«˜ä½æƒå€¼ï¼Œåç»­ç”¨äºæ»šåŠ¨å“ˆå¸Œç§»é™¤é¦–å­—ç¬¦
     for (int i = 0; i < m - 1; ++i) {
         highestPower = (highestPower * base) % modulus;
     }
 
-    // Í¬²½¼ÆËãÄ£Ê½ÓëÊ×¸ö´°¿ÚµÄ¹şÏ£Öµ
+    // åŒæ­¥è®¡ç®—æ¨¡å¼ä¸é¦–ä¸ªçª—å£çš„å“ˆå¸Œå€¼
     for (int i = 0; i < m; ++i) {
         patternHash = (base * patternHash + pattern[i]) % modulus;
         textHash = (base * textHash + text[i]) % modulus;
     }
 
-    // Ö÷Ñ­»·£º»¬¶¯´°¿Ú²¢±È½Ï¹şÏ££¬±ØÒªÊ±Öğ×Ö·ûÈ·ÈÏ
+    // ä¸»å¾ªç¯ï¼šæ»‘åŠ¨çª—å£å¹¶æ¯”è¾ƒå“ˆå¸Œï¼Œå¿…è¦æ—¶é€å­—ç¬¦ç¡®è®¤
     for (int i = 0; i <= n - m; ++i) {
         if (patternHash == textHash) {
             bool match = true;
-            // ¹şÏ£ÏàµÈÊ±ÔÙÖğ×Ö·û±È¶ÔÈ·ÈÏ£¬±ÜÃâÎó±¨
+            // å“ˆå¸Œç›¸ç­‰æ—¶å†é€å­—ç¬¦æ¯”å¯¹ç¡®è®¤ï¼Œé¿å…è¯¯æŠ¥
             for (int j = 0; j < m; ++j) {
                 ++result.characterComparisons;
                 if (text[i + j] != pattern[j]) {
@@ -84,7 +84,7 @@ SearchResult rabinKarpSearch(const string& text, const string& pattern, int base
         }
 
         if (i < n - m) {
-            // ¹ö¶¯¸üĞÂ¹şÏ££ºÒÆ³ı¾ÉÊ××Ö·û¡¢¼ÓÈëĞÂ×Ö·û
+            // æ»šåŠ¨æ›´æ–°å“ˆå¸Œï¼šç§»é™¤æ—§é¦–å­—ç¬¦ã€åŠ å…¥æ–°å­—ç¬¦
             textHash = (base * (textHash - text[i] * highestPower) + text[i + m]) % modulus;
             if (textHash < 0) {
                 textHash += modulus;
@@ -97,13 +97,13 @@ SearchResult rabinKarpSearch(const string& text, const string& pattern, int base
     return result;
 }
 
-// ¹¹½¨ KMP µÄÇ°×ºº¯Êı£¨²¿·ÖÆ¥Åä±í£©£¬¼ÇÂ¼±È½Ï´ÎÊı·½±ãÍ³¼Æ
+// æ„å»º KMP çš„å‰ç¼€å‡½æ•°ï¼ˆéƒ¨åˆ†åŒ¹é…è¡¨ï¼‰ï¼Œè®°å½•æ¯”è¾ƒæ¬¡æ•°æ–¹ä¾¿ç»Ÿè®¡
 vector<int> buildKmpPrefix(const string& pattern, size_t& comparisons) {
     vector<int> prefix(pattern.size());
     int length = 0;
     prefix[0] = 0;
 
-    // ±éÀúÄ£Ê½´®£¬¹¹½¨×î³¤ÏàµÈÇ°ºó×º³¤¶ÈÊı×é
+    // éå†æ¨¡å¼ä¸²ï¼Œæ„å»ºæœ€é•¿ç›¸ç­‰å‰åç¼€é•¿åº¦æ•°ç»„
     for (size_t i = 1; i < pattern.size(); ++i) {
         while (length > 0 && pattern[length] != pattern[i]) {
             ++comparisons;
@@ -118,12 +118,12 @@ vector<int> buildKmpPrefix(const string& pattern, size_t& comparisons) {
     return prefix;
 }
 
-// KMP Ëã·¨£ºÀûÓÃÇ°×ºº¯Êı±ÜÃâÖØ¸´±È½Ï£¬Ê±¼ä¸´ÔÓ¶È O(n+m)£¬¿Õ¼ä O(m)
+// KMP ç®—æ³•ï¼šåˆ©ç”¨å‰ç¼€å‡½æ•°é¿å…é‡å¤æ¯”è¾ƒï¼Œæ—¶é—´å¤æ‚åº¦ O(n+m)ï¼Œç©ºé—´ O(m)
 SearchResult kmpSearch(const string& text, const string& pattern) {
     SearchResult result{ "Knuth-Morris-Pratt" };
     auto start = chrono::high_resolution_clock::now();
 
-    // ±ß½ç´¦Àí£ºÄ£Ê½Îª¿Õ»ò¹ı³¤Ö±½Ó·µ»Ø
+    // è¾¹ç•Œå¤„ç†ï¼šæ¨¡å¼ä¸ºç©ºæˆ–è¿‡é•¿ç›´æ¥è¿”å›
     if (pattern.empty() || text.size() < pattern.size()) {
         result.duration = chrono::high_resolution_clock::now() - start;
         return result;
@@ -133,7 +133,7 @@ SearchResult kmpSearch(const string& text, const string& pattern) {
     vector<int> prefix = buildKmpPrefix(pattern, prefixComparisons);
 
     int j = 0;
-    // ±éÀúÖ÷´®×Ö·û£¬ÀûÓÃÇ°×º±í»ØÍË±ÜÃâÖØ¸´±È½Ï
+    // éå†ä¸»ä¸²å­—ç¬¦ï¼Œåˆ©ç”¨å‰ç¼€è¡¨å›é€€é¿å…é‡å¤æ¯”è¾ƒ
     for (int i = 0; i < static_cast<int>(text.size()); ++i) {
         while (j > 0 && pattern[j] != text[i]) {
             ++result.characterComparisons;
@@ -143,7 +143,7 @@ SearchResult kmpSearch(const string& text, const string& pattern) {
         if (pattern[j] == text[i]) {
             ++j;
         }
-        // ³É¹¦Æ¥ÅäÕû¶ÎÄ£Ê½ºó¼ÇÂ¼Î»ÖÃ£¬²¢°´ÕÕÇ°×º±í»ØÍË
+        // æˆåŠŸåŒ¹é…æ•´æ®µæ¨¡å¼åè®°å½•ä½ç½®ï¼Œå¹¶æŒ‰ç…§å‰ç¼€è¡¨å›é€€
         if (j == static_cast<int>(pattern.size())) {
             result.positions.push_back(i - j + 1);
             j = prefix[j - 1];
@@ -156,7 +156,7 @@ SearchResult kmpSearch(const string& text, const string& pattern) {
     return result;
 }
 
-// ¹¹½¨ Sunday Ëã·¨µÄÎ»ÒÆ±í£º¼ÇÂ¼×Ö·û¾àÀëÄ£Ê½´®Ä©Î²µÄ×îÓÒ¾àÀë
+// æ„å»º Sunday ç®—æ³•çš„ä½ç§»è¡¨ï¼šè®°å½•å­—ç¬¦è·ç¦»æ¨¡å¼ä¸²æœ«å°¾çš„æœ€å³è·ç¦»
 unordered_map<char, int> buildSundayTable(const string& pattern) {
     unordered_map<char, int> table;
     for (int i = 0; i < static_cast<int>(pattern.size()); ++i) {
@@ -165,7 +165,7 @@ unordered_map<char, int> buildSundayTable(const string& pattern) {
     return table;
 }
 
-// Sunday Ëã·¨£º¹Û²ìÖ÷´®´°¿ÚºóÒ»Î»£¬°´Î»ÒÆ±íÌø×ª£¬¾ùÊ±¼ä O(n)
+// Sunday ç®—æ³•ï¼šè§‚å¯Ÿä¸»ä¸²çª—å£åä¸€ä½ï¼ŒæŒ‰ä½ç§»è¡¨è·³è½¬ï¼Œå‡æ—¶é—´ O(n)
 SearchResult sundaySearch(const string& text, const string& pattern) {
     SearchResult result{ "Sunday" };
     auto start = chrono::high_resolution_clock::now();
@@ -180,7 +180,7 @@ SearchResult sundaySearch(const string& text, const string& pattern) {
     int m = static_cast<int>(pattern.size());
     int i = 0;
 
-    // Ñ­»·»¬¶¯´°¿Ú£¬ÈôÆ¥ÅäÊ§°ÜÒÀ¾İ´°¿ÚºóÒ»Î»×Ö·û¾ö¶¨Ìø×ª²½³¤
+    // å¾ªç¯æ»‘åŠ¨çª—å£ï¼Œè‹¥åŒ¹é…å¤±è´¥ä¾æ®çª—å£åä¸€ä½å­—ç¬¦å†³å®šè·³è½¬æ­¥é•¿
     while (i <= n - m) {
         int j = 0;
         while (j < m && text[i + j] == pattern[j]) {
@@ -206,7 +206,7 @@ SearchResult sundaySearch(const string& text, const string& pattern) {
 
 const int ASCII_SIZE = 256;
 
-// ¹¹½¨ Boyer-Moore µÄ»µ×Ö·û±í£º¼ÇÂ¼×Ö·ûÔÚÄ£Ê½ÖĞµÄ×îÓÒÎ»ÖÃ
+// æ„å»º Boyer-Moore çš„åå­—ç¬¦è¡¨ï¼šè®°å½•å­—ç¬¦åœ¨æ¨¡å¼ä¸­çš„æœ€å³ä½ç½®
 void buildBadCharacterTable(const string& pattern, vector<int>& badChar) {
     badChar.assign(ASCII_SIZE, -1);
     for (int i = 0; i < static_cast<int>(pattern.size()); ++i) {
@@ -214,13 +214,13 @@ void buildBadCharacterTable(const string& pattern, vector<int>& badChar) {
     }
 }
 
-// ¹¹½¨ Boyer-Moore µÄºÃºó×º±í£º¼ÆËã²»Í¬ºó×º¶ÔÓ¦µÄÌø×ª¾àÀë
+// æ„å»º Boyer-Moore çš„å¥½åç¼€è¡¨ï¼šè®¡ç®—ä¸åŒåç¼€å¯¹åº”çš„è·³è½¬è·ç¦»
 vector<int> buildGoodSuffixTable(const string& pattern) {
     int m = static_cast<int>(pattern.size());
     vector<int> suffix(m, 0);
     vector<int> prefix(m, 0);
 
-    // Í¨¹ı·´Ïò±È½Ï¼ÆËãÃ¿¸öºó×ºµÄÆğµãÎ»ÖÃÓëÊÇ·ñÎªÇ°×º
+    // é€šè¿‡åå‘æ¯”è¾ƒè®¡ç®—æ¯ä¸ªåç¼€çš„èµ·ç‚¹ä½ç½®ä¸æ˜¯å¦ä¸ºå‰ç¼€
     for (int i = 0; i < m - 1; ++i) {
         int j = i;
         int k = 0;
@@ -235,14 +235,14 @@ vector<int> buildGoodSuffixTable(const string& pattern) {
     }
 
     vector<int> shift(m, m);
-    // ´¦ÀíÍêÕûÇ°×ºÆ¥ÅäµÄÇé¿ö£¬¸üĞÂÎ»ÒÆ±í
+    // å¤„ç†å®Œæ•´å‰ç¼€åŒ¹é…çš„æƒ…å†µï¼Œæ›´æ–°ä½ç§»è¡¨
     for (int i = 0; i < m; ++i) {
         if (prefix[i]) {
             shift[m - 1 - i] = m - 1 - i;
         }
     }
 
-    // °´ÕÕ³öÏÖµÄºó×º³¤¶Èµ÷Õû¶ÔÓ¦µÄÎ»ÖÃÌø×ªÖµ
+    // æŒ‰ç…§å‡ºç°çš„åç¼€é•¿åº¦è°ƒæ•´å¯¹åº”çš„ä½ç½®è·³è½¬å€¼
     for (int i = 1; i < m; ++i) {
         int slen = suffix[i];
         if (slen != 0) {
@@ -252,7 +252,7 @@ vector<int> buildGoodSuffixTable(const string& pattern) {
     return shift;
 }
 
-// Boyer-Moore Ëã·¨£º½áºÏ»µ×Ö·ûÓëºÃºó×ºÆô·¢Ê½£¬Æ½¾ùÊ±¼ä½üËÆ O(n/m)
+// Boyer-Moore ç®—æ³•ï¼šç»“åˆåå­—ç¬¦ä¸å¥½åç¼€å¯å‘å¼ï¼Œå¹³å‡æ—¶é—´è¿‘ä¼¼ O(n/m)
 SearchResult boyerMooreSearch(const string& text, const string& pattern) {
     SearchResult result{ "Boyer-Moore" };
     auto start = chrono::high_resolution_clock::now();
@@ -270,7 +270,7 @@ SearchResult boyerMooreSearch(const string& text, const string& pattern) {
     int m = static_cast<int>(pattern.size());
     int i = 0;
 
-    // ´ÓÓÒµ½×ó±È½Ï´°¿ÚÓëÄ£Ê½£¬ÀûÓÃÁ½ÀàÆô·¢Ê½¾ö¶¨Ìø×ª
+    // ä»å³åˆ°å·¦æ¯”è¾ƒçª—å£ä¸æ¨¡å¼ï¼Œåˆ©ç”¨ä¸¤ç±»å¯å‘å¼å†³å®šè·³è½¬
     while (i <= n - m) {
         int j = m - 1;
         while (j >= 0 && pattern[j] == text[i + j]) {
@@ -295,7 +295,7 @@ SearchResult boyerMooreSearch(const string& text, const string& pattern) {
 }
 
 
-// ¸ù¾İÓÃ»§Ñ¡ÔñÔËĞĞ¶ÔÓ¦µÄÆ¥ÅäËã·¨£¬·µ»ØÍ³¼Æ½á¹û
+// æ ¹æ®ç”¨æˆ·é€‰æ‹©è¿è¡Œå¯¹åº”çš„åŒ¹é…ç®—æ³•ï¼Œè¿”å›ç»Ÿè®¡ç»“æœ
 SearchResult runAlgorithm(int choice, const string& text, const string& pattern) {
     switch (choice) {
     case 1:
