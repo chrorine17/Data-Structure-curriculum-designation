@@ -6,7 +6,7 @@
 
 using namespace std;
 
-// 核心算法模块：封装所有串匹配算法的声明，供主流程统一调用
+// 鏍稿績绠楁硶妯″潡锛氬皝瑁呮墍鏈変覆鍖归厤绠楁硶鐨勫０鏄庯紝渚涗富娴佺▼缁熶竴璋冪敤
 SearchResult bruteForceSearch(const string& text, const string& pattern);
 
 SearchResult rabinKarpSearch(const string& text, const string& pattern, int base = 256, int modulus = 101);
@@ -17,5 +17,5 @@ SearchResult sundaySearch(const string& text, const string& pattern);
 
 SearchResult boyerMooreSearch(const string& text, const string& pattern);
 
-// 根据用户选择运行对应的匹配算法，返回统计结果
+// 鏍规嵁鐢ㄦ埛閫夋嫨杩愯瀵瑰簲鐨勫尮閰嶇畻娉曪紝杩斿洖缁熻缁撴灉
 SearchResult runAlgorithm(int choice, const string& text, const string& pattern);
