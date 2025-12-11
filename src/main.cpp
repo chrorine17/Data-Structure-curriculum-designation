@@ -6,7 +6,7 @@
 
 using namespace std;
 
-// ³ÌĞòÈë¿Ú£ºÕ¹Ê¾¸´ÔÓ¶ÈÌáÊ¾²¢Ìá¹©½»»¥²Ëµ¥
+// ç¨‹åºå…¥å£ï¼šå±•ç¤ºå¤æ‚åº¦æç¤ºå¹¶æä¾›äº¤äº’èœå•
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
@@ -14,19 +14,19 @@ int main() {
     vector<DataSet> dataSets = buildDataSets();
     showComplexityNote();
 
-    // Ö÷Ñ­»·´¦ÀíÓÃ»§²Ëµ¥£¬°´ÊäÈëÑ¡Ôñ²»Í¬¹¦ÄÜ
+    // ä¸»å¾ªç¯å¤„ç†ç”¨æˆ·èœå•ï¼ŒæŒ‰è¾“å…¥é€‰æ‹©ä¸åŒåŠŸèƒ½
     while (true) {
-        cout << "1. Ñ¡Ôñµ¥Ò»Ëã·¨ÔËĞĞ\n2. ²¢ĞĞ±È½ÏËùÓĞËã·¨\n3. ÍË³ö\nÇëÊäÈëÑ¡Ïî: ";
+        cout << "1. é€‰æ‹©å•ä¸€ç®—æ³•è¿è¡Œ\n2. å¹¶è¡Œæ¯”è¾ƒæ‰€æœ‰ç®—æ³•\n3. é€€å‡º\nè¯·è¾“å…¥é€‰é¡¹: ";
         int choice;
         if (!(cin >> choice)) {
             break;
         }
         if (choice == 1) {
-            // ´«ÈëËã·¨ÔËĞĞÆ÷£¬È·±£¹¤¾ß²ãÓëËã·¨²ã½âñî
+            // ä¼ å…¥ç®—æ³•è¿è¡Œå™¨ï¼Œç¡®ä¿å·¥å…·å±‚ä¸ç®—æ³•å±‚è§£è€¦
             runSingleAlgorithm(dataSets, runAlgorithm);
         }
         else if (choice == 2) {
-            // ²¢ĞĞÄ£Ê½Í¬ÑùÍ¨¹ı»Øµ÷µ÷ÓÃËã·¨²ã£¬±£³Öµ¥ÏòÒÀÀµ
+            // å¹¶è¡Œæ¨¡å¼åŒæ ·é€šè¿‡å›è°ƒè°ƒç”¨ç®—æ³•å±‚ï¼Œä¿æŒå•å‘ä¾èµ–
             runAllAlgorithmsParallel(dataSets, runAlgorithm);
         }
         else {
