@@ -11,7 +11,7 @@
 
 using namespace std;
 
-// ¸¨Öú¹¦ÄÜÄ£¿é£º¸ºÔğÊı¾İ¼¯Éú³ÉÓë½á¹û´òÓ¡£¬±ÜÃâÖ÷Á÷³Ì»ìÔÓÏ¸½Ú
+// è¾…åŠ©åŠŸèƒ½æ¨¡å—ï¼šè´Ÿè´£æ•°æ®é›†ç”Ÿæˆä¸ç»“æœæ‰“å°ï¼Œé¿å…ä¸»æµç¨‹æ··æ‚ç»†èŠ‚
 inline string generateRandomString(int length, const string& alphabet) {
     random_device rd;
     mt19937 gen(rd());
@@ -19,47 +19,47 @@ inline string generateRandomString(int length, const string& alphabet) {
 
     string result;
     result.reserve(length);
-    // Ñ­»·Éú³ÉËæ»ú×Ö·û£¬²¢Ë³Ğò×·¼Óµ½½á¹û×Ö·û´®ÖĞ
+    // å¾ªç¯ç”Ÿæˆéšæœºå­—ç¬¦ï¼Œå¹¶é¡ºåºè¿½åŠ åˆ°ç»“æœå­—ç¬¦ä¸²ä¸­
     for (int i = 0; i < length; ++i) {
         result.push_back(alphabet[dist(gen)]);
     }
     return result;
 }
 
-// ¹¹½¨Èô¸É²»Í¬ÌØĞÔµÄÄÚÖÃÊı¾İ¼¯£¬¸²¸Ç³¤¶È¡¢·Ö²¼ÓëÄ£Ê½ÆµÂÊ
+// æ„å»ºè‹¥å¹²ä¸åŒç‰¹æ€§çš„å†…ç½®æ•°æ®é›†ï¼Œè¦†ç›–é•¿åº¦ã€åˆ†å¸ƒä¸æ¨¡å¼é¢‘ç‡
 inline vector<DataSet> buildDataSets() {
     vector<DataSet> dataSets;
-    dataSets.push_back({ "¶ÌÎÄ±¾ÖØ¸´", "abracadabra abracadabra", "abra" });
+    dataSets.push_back({ "çŸ­æ–‡æœ¬é‡å¤", "abracadabra abracadabra", "abra" });
 
     string balanced = generateRandomString(5000, "abcdefghijklmnopqrstuvwxyz");
     string commonPattern = balanced.substr(250, 10);
-    dataSets.push_back({ "ÖĞµÈËæ»ú", balanced, commonPattern });
+    dataSets.push_back({ "ä¸­ç­‰éšæœº", balanced, commonPattern });
 
     string skewed = generateRandomString(4000, "aaaaab");
-    dataSets.push_back({ "Æ«Ğ±×Ö·û·Ö²¼", skewed, "aaaaa" });
+    dataSets.push_back({ "åæ–œå­—ç¬¦åˆ†å¸ƒ", skewed, "aaaaa" });
 
     string longText = generateRandomString(20000, "abcde");
-    dataSets.push_back({ "³¤ÎÄ±¾µÍÆµÄ£Ê½", longText, "edc" });
+    dataSets.push_back({ "é•¿æ–‡æœ¬ä½é¢‘æ¨¡å¼", longText, "edc" });
 
     return dataSets;
 }
 
-// ´òÓ¡Êı¾İ¼¯¸ÅÒª£¬·½±ãÓÃ»§Ñ¡Ôñ»ò¸ÄÎª×Ô¶¨ÒåÊäÈë
+// æ‰“å°æ•°æ®é›†æ¦‚è¦ï¼Œæ–¹ä¾¿ç”¨æˆ·é€‰æ‹©æˆ–æ”¹ä¸ºè‡ªå®šä¹‰è¾“å…¥
 inline void printDataSets(const vector<DataSet>& dataSets) {
     for (size_t i = 0; i < dataSets.size(); ++i) {
-        cout << i + 1 << ". " << dataSets[i].name << " | ÎÄ±¾³¤¶È: "
-            << dataSets[i].text.size() << " | Ä£Ê½: " << dataSets[i].pattern
+        cout << i + 1 << ". " << dataSets[i].name << " | æ–‡æœ¬é•¿åº¦: "
+            << dataSets[i].text.size() << " | æ¨¡å¼: " << dataSets[i].pattern
             << "\n";
     }
-    cout << dataSets.size() + 1 << ". ×Ô¶¨ÒåÊäÈë\n";
+    cout << dataSets.size() + 1 << ". è‡ªå®šä¹‰è¾“å…¥\n";
 }
 
-// ´òÓ¡Ò»´ÎËÑË÷µÄ½á¹û£¬Êä³öÆ¥ÅäÎ»ÖÃ¡¢±È½Ï´ÎÊıºÄÊ±
+// æ‰“å°ä¸€æ¬¡æœç´¢çš„ç»“æœï¼Œè¾“å‡ºåŒ¹é…ä½ç½®ã€æ¯”è¾ƒæ¬¡æ•°è€—æ—¶
 inline void printResult(const SearchResult& result) {
-    cout << "Ëã·¨: " << result.algorithmName << '\n';
-    cout << "Æ¥ÅäÎ»ÖÃ: ";
+    cout << "ç®—æ³•: " << result.algorithmName << '\n';
+    cout << "åŒ¹é…ä½ç½®: ";
     if (result.positions.empty()) {
-        cout << "ÎŞÆ¥Åä";
+        cout << "æ— åŒ¹é…";
     }
     else {
         for (size_t i = 0; i < result.positions.size(); ++i) {
@@ -69,15 +69,15 @@ inline void printResult(const SearchResult& result) {
             }
         }
     }
-    cout << "\n×Ö·û±È½Ï´ÎÊı: " << result.characterComparisons;
-    cout << "\nºÄÊ±: " << fixed << setprecision(3) << result.duration.count() << " ms\n\n";
+    cout << "\nå­—ç¬¦æ¯”è¾ƒæ¬¡æ•°: " << result.characterComparisons;
+    cout << "\nè€—æ—¶: " << fixed << setprecision(3) << result.duration.count() << " ms\n\n";
 }
 
-// µ¥Ëã·¨Ä£Ê½£ºÈÃÓÃ»§Ñ¡ÔñÊı¾İ¼¯ÓëËã·¨£¬Õ¹Ê¾µ¥´ÎÔËĞĞµÄÏêÏ¸Ö¸±ê
+// å•ç®—æ³•æ¨¡å¼ï¼šè®©ç”¨æˆ·é€‰æ‹©æ•°æ®é›†ä¸ç®—æ³•ï¼Œå±•ç¤ºå•æ¬¡è¿è¡Œçš„è¯¦ç»†æŒ‡æ ‡
 inline void runSingleAlgorithm(const vector<DataSet>& dataSets,
     const function<SearchResult(int, const string&, const string&)>& runner) {
     printDataSets(dataSets);
-    cout << "ÇëÑ¡ÔñÊı¾İ¼¯: ";
+    cout << "è¯·é€‰æ‹©æ•°æ®é›†: ";
     int dataChoice;
     cin >> dataChoice;
 
@@ -89,29 +89,29 @@ inline void runSingleAlgorithm(const vector<DataSet>& dataSets,
         pattern = dataSets[dataChoice - 1].pattern;
     }
     else {
-        // ÓÃ»§Ñ¡Ôñ×Ô¶¨ÒåÊ±£¬¶ÁÈ¡ÍêÕûÎÄ±¾ÓëÄ£Ê½´®
-        cout << "ÇëÊäÈëÎÄ±¾: ";
+        // ç”¨æˆ·é€‰æ‹©è‡ªå®šä¹‰æ—¶ï¼Œè¯»å–å®Œæ•´æ–‡æœ¬ä¸æ¨¡å¼ä¸²
+        cout << "è¯·è¾“å…¥æ–‡æœ¬: ";
         cin.ignore();
         getline(cin, text);
-        cout << "ÇëÊäÈëÄ£Ê½´®: ";
+        cout << "è¯·è¾“å…¥æ¨¡å¼ä¸²: ";
         getline(cin, pattern);
     }
 
-    cout << "Ñ¡ÔñËã·¨:\n1. Brute Force\n2. Rabin-Karp\n3. Sunday\n4. KMP\n5. Boyer-Moore\n";
+    cout << "é€‰æ‹©ç®—æ³•:\n1. Brute Force\n2. Rabin-Karp\n3. Sunday\n4. KMP\n5. Boyer-Moore\n";
     int algoChoice;
     cin >> algoChoice;
 
-    // µ÷ÓÃÍâ²¿´«ÈëµÄËã·¨ÔËĞĞÆ÷£¬±£³Ö¹¤¾ß²ã²»Ö±½ÓÒÀÀµËã·¨Ä£¿é
+    // è°ƒç”¨å¤–éƒ¨ä¼ å…¥çš„ç®—æ³•è¿è¡Œå™¨ï¼Œä¿æŒå·¥å…·å±‚ä¸ç›´æ¥ä¾èµ–ç®—æ³•æ¨¡å—
     SearchResult result = runner(algoChoice, text, pattern);
     printResult(result);
 }
 
-// ²¢ĞĞ¶Ô±ÈÄ£Ê½£ºÔÚÍ¬Ò»Êı¾İ¼¯ÉÏ²¢·¢ÔËĞĞËùÓĞËã·¨£¬±ãÓÚºáÏò±È½Ï
+// å¹¶è¡Œå¯¹æ¯”æ¨¡å¼ï¼šåœ¨åŒä¸€æ•°æ®é›†ä¸Šå¹¶å‘è¿è¡Œæ‰€æœ‰ç®—æ³•ï¼Œä¾¿äºæ¨ªå‘æ¯”è¾ƒ
 inline void runAllAlgorithmsParallel(
     const vector<DataSet>& dataSets,
     const function<SearchResult(int, const string&, const string&)>& runner) {
     printDataSets(dataSets);
-    cout << "ÇëÑ¡ÔñÊı¾İ¼¯: ";
+    cout << "è¯·é€‰æ‹©æ•°æ®é›†: ";
     int dataChoice;
     cin >> dataChoice;
 
@@ -123,33 +123,33 @@ inline void runAllAlgorithmsParallel(
         pattern = dataSets[dataChoice - 1].pattern;
     }
     else {
-        cout << "ÇëÊäÈëÎÄ±¾: ";
+        cout << "è¯·è¾“å…¥æ–‡æœ¬: ";
         cin.ignore();
         getline(cin, text);
-        cout << "ÇëÊäÈëÄ£Ê½´®: ";
+        cout << "è¯·è¾“å…¥æ¨¡å¼ä¸²: ";
         getline(cin, pattern);
     }
 
     vector<future<SearchResult>> futures;
-    // Ñ­»·Æô¶¯ 5 ÖÖËã·¨µÄÒì²½ÈÎÎñ£¬·½±ã²¢ĞĞ±È½Ï
+    // å¾ªç¯å¯åŠ¨ 5 ç§ç®—æ³•çš„å¼‚æ­¥ä»»åŠ¡ï¼Œæ–¹ä¾¿å¹¶è¡Œæ¯”è¾ƒ
     for (int i = 1; i <= 5; ++i) {
         futures.emplace_back(async(launch::async, [i, &text, &pattern, &runner]() {
             return runner(i, text, pattern);
             }));
     }
 
-    // ÒÀ´Î»ñÈ¡Òì²½½á¹û²¢´òÓ¡£¬±ÜÃâÂÒĞòÊä³ö
+    // ä¾æ¬¡è·å–å¼‚æ­¥ç»“æœå¹¶æ‰“å°ï¼Œé¿å…ä¹±åºè¾“å‡º
     for (auto& f : futures) {
         printResult(f.get());
     }
 }
 
-// Õ¹Ê¾¸÷Ëã·¨µÄÊ±¼ä¸´ÔÓ¶È¡¢¿Õ¼ä¸´ÔÓ¶È¸ÅÀÀ£¬°ïÖúÓÃ»§Àí½âÑ¡Ôñ
+// å±•ç¤ºå„ç®—æ³•çš„æ—¶é—´å¤æ‚åº¦ã€ç©ºé—´å¤æ‚åº¦æ¦‚è§ˆï¼Œå¸®åŠ©ç”¨æˆ·ç†è§£é€‰æ‹©
 inline void showComplexityNote() {
-    cout << "¸´ÔÓ¶È¸ÅÀÀ£¨Æ½¾ù/×î»µ£©£º\n";
-    cout << "Brute Force: O(nm) / O(nm), ¿Õ¼ä O(1)\n";
-    cout << "Rabin-Karp: O(n+m) / O(nm)£¨³öÏÖ¹şÏ£³åÍ»Ê±£©£¬¿Õ¼ä O(1)\n";
-    cout << "KMP: O(n+m) / O(n+m)£¬¿Õ¼ä O(m)\n";
-    cout << "Sunday: O(n) / O(nm)£¬¿Õ¼ä O(|¦²|)\n";
-    cout << "Boyer-Moore: O(n/m) / O(nm)£¬¿Õ¼ä O(|¦²|+m)\n\n";
+    cout << "å¤æ‚åº¦æ¦‚è§ˆï¼ˆå¹³å‡/æœ€åï¼‰ï¼š\n";
+    cout << "Brute Force: O(nm) / O(nm), ç©ºé—´ O(1)\n";
+    cout << "Rabin-Karp: O(n+m) / O(nm)ï¼ˆå‡ºç°å“ˆå¸Œå†²çªæ—¶ï¼‰ï¼Œç©ºé—´ O(1)\n";
+    cout << "KMP: O(n+m) / O(n+m)ï¼Œç©ºé—´ O(m)\n";
+    cout << "Sunday: O(n) / O(nm)ï¼Œç©ºé—´ O(|Î£|)\n";
+    cout << "Boyer-Moore: O(n/m) / O(nm)ï¼Œç©ºé—´ O(|Î£|+m)\n\n";
 }
